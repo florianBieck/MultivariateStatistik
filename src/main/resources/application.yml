@@ -11,9 +11,13 @@ custom:
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: mysql
   datasource:
     url: jdbc:mysql://localhost:3306/multivariate?useSSL=false
     username: root
     password:
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false
