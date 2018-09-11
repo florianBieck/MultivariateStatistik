@@ -1,0 +1,19 @@
+custom:
+  featurescount: 4
+  classescount: 3
+  alphavantage:
+    apikey: 2VOE952IOQJM9P97
+  twitter:
+    consumerkey: hzOnq1OhwCD1pdq0esBFk2Pny
+    consumersecret: an2ObHqGxXhL5ZRwPoddtXYlhpEVhG3HzlQW7g2vmAX4X2f8Q7
+    accesstoken: 968770098352844801-mlZFxvt2FedFQ7Gj8CqfxhkZUg6wcyg
+    accesstokensecret: 9wuiK2mL62GxuYKQGQbHUkiKFi9Zl3wdXbCOdhB5POzwd
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/multivariate?useSSL=false
+    username: root
+    password:
