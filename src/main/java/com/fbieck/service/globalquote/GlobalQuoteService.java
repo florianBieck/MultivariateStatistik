@@ -3,6 +3,8 @@ package com.fbieck.service.globalquote;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fbieck.entities.alphavantage.GlobalQuote;
+import com.fbieck.repository.GlobalQuoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,21 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class GlobalQuoteService implements IGlobalQuoteService{
 
+    @Autowired
+    private GlobalQuoteRepository globalQuoteRepository;
+
     @Value("${custom.alphavantage.apikey}")
     private String APIKEY;
+
+    @Override
+    public Iterable<GlobalQuote> findAll() {
+        return globalQuoteRepository.findAll();
+    }
 
     @Override
     public GlobalQuote findBySymbol(String symbol) throws IOException {
@@ -39,9 +50,23 @@ public class GlobalQuoteService implements IGlobalQuoteService{
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         globalQuote.setLatestTradingDay(LocalDate.parse(root.path("07. latest trading day").textValue(), dateTimeFormatter));
         globalQuote.setPreviousClose(root.path("08. previous close").asDouble());
-        globalQuote.setChange(root.path("09. change").asDouble());
-        globalQuote.setChangePercent(Double.parseDouble(root.path("10. change percent").textValue().replace("%", "")));
+        globalQuote.setChangeAbsolute(root.path("09. changeAbsolute").asDouble());
+        globalQuote.setChangePercent(Double.parseDouble(root.path("10. changeAbsolute percent").textValue().replace("%", "")));
 
         return globalQuote;
+    }
+
+    @Override
+    public Iterable<GlobalQuote> saveAll(List<GlobalQuote> globalQuotes) {
+        return globalQuoteRepository.saveAll(globalQuotes);
+    }
+
+    @Override
+    public Boolean delete(Integer id) {
+        if (globalQuoteRepository.existsById(id)) {
+            globalQuoteRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

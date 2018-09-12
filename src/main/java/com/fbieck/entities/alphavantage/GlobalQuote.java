@@ -10,27 +10,36 @@ import java.time.LocalDate;
 public class GlobalQuote {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idglobalquote")
     private Integer id;
 
+    @Column(length = 60)
     private String symbol;
 
+    @Column(precision = 1)
     private Double open;
 
+    @Column(precision = 1)
     private Double high;
 
+    @Column(precision = 1)
     private Double low;
 
+    @Column(precision = 1)
     private Double price;
 
+    @Column(precision = 1)
     private Double volume;
 
     private LocalDate latestTradingDay;
 
+    @Column(precision = 1)
     private Double previousClose;
 
-    private Double change;
+    @Column(precision = 1)
+    private Double changeAbsolute;
 
+    @Column(precision = 1)
     private Double changePercent;
 }

@@ -1,7 +1,10 @@
 package com.fbieck.init;
 
+import com.fbieck.service.globalquote.IGlobalQuoteService;
+import com.fbieck.service.tweet.ITweetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -14,8 +17,18 @@ public class InitialDataLoader implements ApplicationListener<ApplicationReadyEv
 
     private static Logger logger = LoggerFactory.getLogger(InitialDataLoader.class);
 
+    @Autowired
+    private ITweetService tweetService;
+
+    @Autowired
+    private IGlobalQuoteService globalQuoteService;
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent){
+
+        tweetService.findAll().iterator().forEachRemaining(tweet -> tweetService.delete(tweet.getId()));
+        globalQuoteService.findAll().iterator()
+                .forEachRemaining(globalQuote -> globalQuoteService.delete(globalQuote.getId()));
 
         /*LocalDateTime start = LocalDateTime.now();
         logger.info("Start: "+start.toString());
