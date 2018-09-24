@@ -1,5 +1,6 @@
 package com.fbieck.init;
 
+import com.fbieck.repository.TimeSeriesEntryRepository;
 import com.fbieck.service.globalquote.IGlobalQuoteService;
 import com.fbieck.service.tweet.ITweetService;
 import org.slf4j.Logger;
@@ -23,12 +24,11 @@ public class InitialDataLoader implements ApplicationListener<ApplicationReadyEv
     @Autowired
     private IGlobalQuoteService globalQuoteService;
 
+    @Autowired
+    private TimeSeriesEntryRepository timeSeriesEntryRepository;
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent){
-
-        tweetService.findAll().iterator().forEachRemaining(tweet -> tweetService.delete(tweet.getId()));
-        globalQuoteService.findAll().iterator()
-                .forEachRemaining(globalQuote -> globalQuoteService.delete(globalQuote.getId()));
 
         /*LocalDateTime start = LocalDateTime.now();
         logger.info("Start: "+start.toString());

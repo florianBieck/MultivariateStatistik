@@ -3,10 +3,14 @@ package com.fbieck.batch.timeseries;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fbieck.entities.alphavantage.TimeSeries;
 import com.fbieck.entities.alphavantage.TimeSeriesEntry;
+import com.google.common.collect.Lists;
+import org.joda.time.LocalDateTime;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class TimeSeriesProcessor implements ItemProcessor<JsonNode, TimeSeries> {
@@ -15,24 +19,35 @@ public class TimeSeriesProcessor implements ItemProcessor<JsonNode, TimeSeries> 
         TimeSeries timeSeries = new TimeSeries();
 
         //Metadata
-        timeSeries.setInformation(jsonNode.get("Meta Data").path("1. Information").textValue());
-        timeSeries.setSymbol(jsonNode.get("Meta Data").path("2. Symbol").textValue());
-        timeSeries.setLastRefreshed(jsonNode.get("Meta Data").path("3. Last Refreshed").textValue());
-        timeSeries.setInterval(jsonNode.get("Meta Data").path("4. Interval").textValue());
-        timeSeries.setOutputsize(jsonNode.get("Meta Data").path("5. Output Size").textValue());
-        timeSeries.setTimezone(jsonNode.get("Meta Data").path("6. Time Zone").textValue());
+        timeSeries.setInformation(jsonNode.get(TimeSeries.FIELD_METADATA)
+                .path(TimeSeries.FIELD_INFORMATION).textValue());
+        timeSeries.setId(jsonNode.get(TimeSeries.FIELD_METADATA)
+                .path(TimeSeries.FIELD_SYMBOL).textValue());
+        timeSeries.setLastRefreshed(jsonNode.get(TimeSeries.FIELD_METADATA)
+                .path(TimeSeries.FIELD_LASTREFRESHED).textValue());
+        timeSeries.setGivenInterval(jsonNode.get(TimeSeries.FIELD_METADATA)
+                .path(TimeSeries.FIELD_GIVENINTERVAL).textValue());
+        timeSeries.setOutputSize(jsonNode.get(TimeSeries.FIELD_METADATA)
+                .path(TimeSeries.FIELD_OUTPUTSIZE).textValue());
+        timeSeries.setTimezone(jsonNode.get(TimeSeries.FIELD_METADATA).path(TimeSeries.FIELD_TIMEZONE).textValue());
 
         //Entries
         timeSeries.setEntries(new ArrayList<>());
-        jsonNode.get("Time Series (5min)").elements().forEachRemaining(element -> {
+        List<JsonNode> elements = Lists.newArrayList(jsonNode.get(TimeSeriesEntry.FIELD_NAME).elements());
+        ArrayList<Map.Entry<String, JsonNode>> fields =
+                Lists.newArrayList(jsonNode.get(TimeSeriesEntry.FIELD_NAME).fields());
+        for (int i = 0; i < elements.size(); i++) {
+            JsonNode element = elements.get(i);
             TimeSeriesEntry timeSeriesEntry = new TimeSeriesEntry();
-            timeSeriesEntry.setOpen(element.path("1. open").asDouble());
-            timeSeriesEntry.setHigh(element.path("2. high").asDouble());
-            timeSeriesEntry.setLow(element.path("3. low").asDouble());
-            timeSeriesEntry.setClose(element.path("4. close").asDouble());
-            timeSeriesEntry.setVolume(element.path("5. volume").asDouble());
+            timeSeriesEntry.setTimestamp(
+                    LocalDateTime.parse(fields.get(i).getKey().replace(" ", "T")));
+            timeSeriesEntry.setOpen(element.path(TimeSeriesEntry.FIELD_OPEN).asDouble());
+            timeSeriesEntry.setHigh(element.path(TimeSeriesEntry.FIELD_HIGH).asDouble());
+            timeSeriesEntry.setLow(element.path(TimeSeriesEntry.FIELD_LOW).asDouble());
+            timeSeriesEntry.setClose(element.path(TimeSeriesEntry.FIELD_CLOSE).asDouble());
+            timeSeriesEntry.setVolume(element.path(TimeSeriesEntry.FIELD_VOLUME).asDouble());
             timeSeries.getEntries().add(timeSeriesEntry);
-        });
+        }
         return timeSeries;
     }
 }

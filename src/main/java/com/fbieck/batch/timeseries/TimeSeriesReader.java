@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +18,10 @@ import java.util.List;
 public class TimeSeriesReader implements ItemReader<JsonNode>, ItemStream {
 
     private final List<String> symbols = Arrays.asList("MSFT");
+
     @Value("${custom.alphavantage.apikey}")
     private String APIKEY;
+
     private List<JsonNode> nodes;
 
     @Override
@@ -39,8 +42,9 @@ public class TimeSeriesReader implements ItemReader<JsonNode>, ItemStream {
             ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
             ObjectMapper mapper = new ObjectMapper();
             try {
-                nodes.add(mapper.readTree(response.getBody()).get(0));
-                System.out.println(response.getBody());
+                nodes.add(mapper.readTree(response.getBody()));
+                mapper.writeValue(new FileOutputStream(symbol + ".rest"),
+                        mapper.readTree(response.getBody()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
