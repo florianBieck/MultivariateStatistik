@@ -1,12 +1,12 @@
 package com.fbieck.repository;
 
-import com.fbieck.entities.Sentiment;
+import com.fbieck.entities.Result;
 import com.fbieck.entities.twitter.Tweet;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SentimentRepository extends CrudRepository<Sentiment, Integer> {
+public interface ResultRepository extends CrudRepository<Result, Integer> {
 
-    Sentiment findByTweet(Tweet tweet);
+    Result findByTweet(Tweet tweet);
 }

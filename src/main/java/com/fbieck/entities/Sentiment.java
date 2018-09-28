@@ -1,5 +1,6 @@
 package com.fbieck.entities;
 
+import com.fbieck.entities.twitter.Tweet;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,6 +13,10 @@ public class Sentiment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idsentiment")
     private Integer id;
+
+    @OneToOne
+    @JoinColumn(name = "idtweet")
+    private Tweet tweet;
 
     private Integer countWords;
 

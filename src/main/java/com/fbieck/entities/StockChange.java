@@ -2,6 +2,7 @@ package com.fbieck.entities;
 
 import com.fbieck.entities.twitter.Tweet;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -21,8 +22,10 @@ public class StockChange {
 
     private Integer hourInterval;
 
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime dateTimeStart;
 
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime dateTimeEnd;
 
     private Double priceStart;

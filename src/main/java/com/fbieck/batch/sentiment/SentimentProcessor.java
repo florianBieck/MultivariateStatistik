@@ -2,9 +2,11 @@ package com.fbieck.batch.sentiment;
 
 import com.fbieck.entities.Sentiment;
 import com.fbieck.entities.twitter.Tweet;
+import com.fbieck.repository.SentimentRepository;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ import java.util.stream.IntStream;
 @Component
 public class SentimentProcessor implements ItemProcessor<Tweet, Sentiment> {
 
+    @Autowired
+    private SentimentRepository sentimentRepository;
 
     @Nullable
     public static Integer getCount(List<String> words, String list) {
@@ -44,7 +48,12 @@ public class SentimentProcessor implements ItemProcessor<Tweet, Sentiment> {
     public Sentiment process(Tweet tweet) throws Exception {
         List<String> words = preprocessIntoWordList(tweet.getText());
 
-        Sentiment sentiment = new Sentiment();
+        Sentiment sentiment = sentimentRepository.findByTweet(tweet);
+        if (sentiment == null) {
+            sentiment = new Sentiment();
+            sentiment.setTweet(tweet);
+            tweet.setSentiment(sentiment);
+        }
         sentiment.setCountWords(words.size());
         sentiment.setCountPositives(getPositiveCount(words));
         sentiment.setCountNegatives(getNegativeCount(words));
@@ -66,8 +75,11 @@ public class SentimentProcessor implements ItemProcessor<Tweet, Sentiment> {
     }
 
     private Double calculatePositivity(Sentiment sentiment) {
-        return (double) ((sentiment.getCountPositives() / sentiment.getCountWords()) -
-                (sentiment.getCountNegatives() / sentiment.getCountWords()));
+        if (sentiment.getCountWords() == 0) {
+            return 0.0;
+        }
+        return (double) sentiment.getCountPositives() / sentiment.getCountWords() -
+                (double) sentiment.getCountNegatives() / sentiment.getCountWords();
     }
 
     private Integer getPositiveCount(List<String> words) {

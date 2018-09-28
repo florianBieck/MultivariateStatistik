@@ -3,7 +3,6 @@ package com.fbieck.batch.tweet;
 import com.fbieck.repository.SymbolRelationRepository;
 import org.springframework.batch.item.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Component;
@@ -34,11 +33,9 @@ public class TweetReader implements ItemReader<Tweet>, ItemStream {
     public void open(ExecutionContext executionContext) throws ItemStreamException {
         List<Tweet> tweets = new ArrayList<>();
         symbolRelationRepository.findAll().forEach(symbolRelation -> {
-            twitter.searchOperations().search(
-                    new SearchParameters(symbolRelation.getHashtag()).lang("en").count(1000))
-                    .getTweets().forEach(tweet -> {
+            twitter.timelineOperations().getUserTimeline(symbolRelation.getUserid(), 500).forEach(tweet -> {
                 tweets.add(tweet);
-                tweet.getExtraData().put("custom_hashtag", symbolRelation.getHashtag());
+                tweet.getExtraData().put("custom_userid", symbolRelation.getUserid());
             });
         });
         this.tweets = tweets;

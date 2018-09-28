@@ -4,6 +4,7 @@ custom:
   hourfilter: 1
   alphavantage:
     apikey: 2VOE952IOQJM9P97
+    apikeyA: 6ODTCPFDTM3WIIC2
   twitter:
     consumerkey: hzOnq1OhwCD1pdq0esBFk2Pny
     consumersecret: an2ObHqGxXhL5ZRwPoddtXYlhpEVhG3HzlQW7g2vmAX4X2f8Q7

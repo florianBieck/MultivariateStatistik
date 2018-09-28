@@ -9,5 +9,5 @@ public interface SymbolRelationRepository extends CrudRepository<SymbolRelation,
 
     SymbolRelation findBySymbol(String symbol);
 
-    SymbolRelation findByHashtag(String hashtag);
+    SymbolRelation findByUserid(Long userid);
 }

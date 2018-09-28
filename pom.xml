@@ -114,6 +114,21 @@
             <version>1.0.0-beta2</version>
         </dependency>
 
+        <!-- Jadira - for JodaTime persistence -->
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.core</artifactId>
+            <version>7.0.0.CR1</version>
+        </dependency>
+
+        <!-- Apache Math -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

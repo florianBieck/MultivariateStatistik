@@ -18,7 +18,7 @@ public class TweetProcessor implements ItemProcessor<org.springframework.social.
         t.setCreatedAt(LocalDateTime.fromDateFields(tweet.getCreatedAt()));
         t.setFavouriteCount(tweet.getFavoriteCount());
         t.setRetweetCount(tweet.getRetweetCount());
-        t.setByHashtag((String) tweet.getExtraData().get("custom_hashtag"));
+        t.setUserid((Long) tweet.getExtraData().get("custom_userid"));
         return t;
     }
 }

@@ -1,6 +1,7 @@
 package com.fbieck.entities.alphavantage;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class TimeSeriesEntry {
     @Column(name = "idtimeseriesentry")
     private Integer id;
 
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime timestamp;
 
     private Double open;

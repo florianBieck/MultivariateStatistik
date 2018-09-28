@@ -15,5 +15,5 @@ public class SymbolRelation {
 
     private String symbol;
 
-    private String hashtag;
+    private Long userid;
 }
