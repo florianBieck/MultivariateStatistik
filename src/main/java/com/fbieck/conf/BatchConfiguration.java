@@ -22,8 +22,6 @@ public class BatchConfiguration {
     private JobRepository jobRepository;
 
     @Autowired
-    private Job job_globalquote;
-    @Autowired
     private Job job_tweet;
     @Autowired
     private Job job_timeseries;
@@ -58,13 +56,6 @@ public class BatchConfiguration {
                 .toJobParameters());
     }
 
-    //@Scheduled(fixedRate = 2000)
-    private void launch_globalquote() throws Exception {
-        jobLauncher().run(job_globalquote, new JobParametersBuilder()
-                .addLong("date", System.currentTimeMillis())
-                .toJobParameters());
-    }
-
     @Scheduled(fixedRate = 60000)
     private void launch_timeseries() throws Exception {
         jobLauncher().run(job_timeseries, new JobParametersBuilder()
@@ -80,9 +71,26 @@ public class BatchConfiguration {
     }
 
     @Scheduled(fixedRate = 10000)
-    private void launch_stockchange() throws Exception {
+    private void launch_stockchange_1h() throws Exception {
         jobLauncher().run(job_stockchange, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 1L)
+                .toJobParameters());
+    }
+
+    @Scheduled(fixedRate = 10000)
+    private void launch_stockchange_24h() throws Exception {
+        jobLauncher().run(job_stockchange, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 24L)
+                .toJobParameters());
+    }
+
+    @Scheduled(fixedRate = 10000)
+    private void launch_stockchange_48h() throws Exception {
+        jobLauncher().run(job_stockchange, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 48L)
                 .toJobParameters());
     }
 

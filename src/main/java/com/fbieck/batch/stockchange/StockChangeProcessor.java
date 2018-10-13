@@ -7,13 +7,16 @@ import com.fbieck.entities.twitter.Tweet;
 import com.fbieck.repository.StockChangeRepository;
 import com.fbieck.repository.SymbolRelationRepository;
 import com.fbieck.repository.TimeSeriesRepository;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
 @Component
+@StepScope
 public class StockChangeProcessor implements ItemProcessor<Tweet, StockChange> {
 
     @Autowired
@@ -23,6 +26,9 @@ public class StockChangeProcessor implements ItemProcessor<Tweet, StockChange> {
 
     @Autowired
     private StockChangeRepository stockChangeRepository;
+
+    @Value("#{jobParameters[hourinterval]}")
+    private Integer hourinterval;
 
     @Override
     public StockChange process(Tweet tweet) throws Exception {
