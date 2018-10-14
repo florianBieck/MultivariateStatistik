@@ -37,6 +37,8 @@ public class ResultReader implements ItemReader<Tweet>, ItemStream {
 
     @Override
     public void close() throws ItemStreamException {
-        tweets.clear();
+        if (tweets != null) {
+            tweets.clear();
+        }
     }
 }

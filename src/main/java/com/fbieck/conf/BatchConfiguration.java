@@ -63,14 +63,14 @@ public class BatchConfiguration {
                 .toJobParameters());
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 5000)
     private void launch_sentiment() throws Exception {
         jobLauncher().run(job_sentiment, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
                 .toJobParameters());
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 5000)
     private void launch_stockchange_1h() throws Exception {
         jobLauncher().run(job_stockchange, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
@@ -78,7 +78,7 @@ public class BatchConfiguration {
                 .toJobParameters());
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 5000)
     private void launch_stockchange_24h() throws Exception {
         jobLauncher().run(job_stockchange, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
@@ -101,21 +101,21 @@ public class BatchConfiguration {
                 .toJobParameters());
     }
 
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
     private void launch_regressionH0() throws Exception {
         jobLauncher().run(job_regressionH0, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
                 .toJobParameters());
     }
 
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
     private void launch_regressionH1() throws Exception {
         jobLauncher().run(job_regressionH1, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
                 .toJobParameters());
     }
 
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
     private void launch_regressionH2() throws Exception {
         jobLauncher().run(job_regressionH2, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())

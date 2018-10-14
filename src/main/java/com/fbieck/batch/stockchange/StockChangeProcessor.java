@@ -37,19 +37,17 @@ public class StockChangeProcessor implements ItemProcessor<Tweet, StockChange> {
                 symbolRelationRepository.findByUserid(tweet.getUserid()).getSymbol()
         );
 
-        int hourinterval = 24;
-
         TimeSeriesEntry timeSeriesEntryAt = timeSeries.getEntries().stream()
-                .max(Comparator.comparing(x -> x.getTimestamp()
+                .min(Comparator.comparing(x -> x.getTimestamp()
                         .compareTo(tweet.getCreatedAt())))
                 .orElse(null);
 
         TimeSeriesEntry timeSeriesEntryInterval = timeSeries.getEntries().stream()
-                .max(Comparator.comparing(x -> x.getTimestamp()
+                .min(Comparator.comparing(x -> x.getTimestamp()
                         .compareTo(tweet.getCreatedAt().plusHours(hourinterval))))
                 .orElse(null);
 
-        StockChange stockChange = stockChangeRepository.findByTweet(tweet);
+        StockChange stockChange = stockChangeRepository.findByTweetAndHourInterval(tweet, hourinterval);
 
         if (timeSeriesEntryAt != null && timeSeriesEntryInterval != null) {
             if (stockChange == null) {
