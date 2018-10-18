@@ -3,6 +3,7 @@ package com.fbieck.batch.regression.h2;
 import com.fbieck.entities.Result;
 import com.fbieck.repository.ResultRepository;
 import com.google.common.collect.Lists;
+import org.apache.commons.math3.exception.NoDataException;
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.springframework.batch.item.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class RegressionH2Reader implements ItemReader<OLSMultipleLinearRegressio
 
     @Override
     public OLSMultipleLinearRegression read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        List<Result> results = Lists.newArrayList(resultRepository.findAll());
+        List<Result> results = Lists.newArrayList(resultRepository.findAllByChangeIntervalIsNotNullAndPositivityIsNotNullAndRetweetCountIsNotNull());
 
         OLSMultipleLinearRegression olsMultipleLinearRegression = new OLSMultipleLinearRegression();
 
@@ -35,7 +36,12 @@ public class RegressionH2Reader implements ItemReader<OLSMultipleLinearRegressio
         }
         double[] y = changeintervals.stream().mapToDouble(Double::doubleValue).toArray();
 
-        olsMultipleLinearRegression.newSampleData(y, x);
+        try {
+            olsMultipleLinearRegression.newSampleData(y, x);
+        } catch (NoDataException e) {
+            //IGNORE
+            return null;
+        }
         return olsMultipleLinearRegression;
     }
 

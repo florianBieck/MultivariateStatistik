@@ -33,7 +33,8 @@ public class TweetReader implements ItemReader<Tweet>, ItemStream {
     public void open(ExecutionContext executionContext) throws ItemStreamException {
         List<Tweet> tweets = new ArrayList<>();
         symbolRelationRepository.findAll().forEach(symbolRelation -> {
-            twitter.timelineOperations().getUserTimeline(symbolRelation.getUserid(), 500).forEach(tweet -> {
+
+            twitter.timelineOperations().getUserTimeline(symbolRelation.getUserid(), 200).forEach(tweet -> {
                 tweets.add(tweet);
                 tweet.getExtraData().put("custom_userid", symbolRelation.getUserid());
             });

@@ -33,7 +33,7 @@ public class StockChangeConfiguration {
     @Bean
     public Job job_stockchange() {
         Step step = stepBuilderFactory.get("stockchange")
-                .<Tweet, StockChange>chunk(600)
+                .<Tweet, StockChange>chunk(10)
                 .reader(stockChangeReader)
                 .processor(stockChangeProcessor)
                 .writer(stockChangeWriter)

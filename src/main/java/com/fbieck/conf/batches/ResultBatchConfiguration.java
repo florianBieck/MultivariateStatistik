@@ -33,7 +33,7 @@ public class ResultBatchConfiguration {
     @Bean
     public Job job_result() {
         Step step = stepBuilderFactory.get("result")
-                .<Tweet, Result>chunk(600)
+                .<Tweet, Result>chunk(10)
                 .reader(resultReader)
                 .processor(resultProcessor)
                 .writer(resultWriter)

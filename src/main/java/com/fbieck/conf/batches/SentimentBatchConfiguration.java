@@ -33,7 +33,7 @@ public class SentimentBatchConfiguration {
     @Bean
     public Job job_sentiment() {
         Step step = stepBuilderFactory.get("sentiment")
-                .<Tweet, Sentiment>chunk(600)
+                .<Tweet, Sentiment>chunk(10)
                 .reader(sentimentReader)
                 .processor(sentimentProcessor)
                 .writer(sentimentWriter)

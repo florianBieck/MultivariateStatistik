@@ -9,4 +9,12 @@ import org.springframework.stereotype.Repository;
 public interface ResultRepository extends CrudRepository<Result, Integer> {
 
     Result findByTweetAndHourInterval(Tweet tweet, Integer hourinterval);
+
+    Iterable<Result> findAllByChangeIntervalIsNotNull();
+
+    Iterable<Result> findAllByChangeIntervalIsNotNullAndPositivityIsNotNull();
+
+    Iterable<Result> findAllByChangeIntervalIsNotNullAndRetweetCountIsNotNull();
+
+    Iterable<Result> findAllByChangeIntervalIsNotNullAndPositivityIsNotNullAndRetweetCountIsNotNull();
 }

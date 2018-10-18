@@ -13,6 +13,7 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.TreeSet;
@@ -70,7 +71,12 @@ public class StockChangeProcessor implements ItemProcessor<Tweet, StockChange> {
                     .stream().filter(timeSeriesEntry -> timeSeriesEntry.getTimestamp().equals(finalEndLDT))
                     .findFirst().orElse(null);
 
-            StockChange stockChange = stockChangeRepository.findByTweetAndHourInterval(tweet, hourinterval);
+            StockChange stockChange = null;
+            try {
+                stockChange = stockChangeRepository.findByTweetAndHourInterval(tweet, hourinterval);
+            } catch (IncorrectResultSizeDataAccessException e) {
+                log.error("Not a unique Result: " + tweet.getId() + " " + hourinterval);
+            }
 
             if (timeSeriesEntryAt != null && timeSeriesEntryInterval != null) {
                 if (stockChange == null) {
