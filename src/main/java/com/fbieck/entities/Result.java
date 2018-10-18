@@ -24,7 +24,7 @@ public class Result {
 
     private Integer retweetCount;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idtweet")
     private Tweet tweet;
 }

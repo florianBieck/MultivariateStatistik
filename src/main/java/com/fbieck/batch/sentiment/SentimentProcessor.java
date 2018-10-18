@@ -52,7 +52,6 @@ public class SentimentProcessor implements ItemProcessor<Tweet, Sentiment> {
         if (sentiment == null) {
             sentiment = new Sentiment();
             sentiment.setTweet(tweet);
-            tweet.setSentiment(sentiment);
         }
         sentiment.setCountWords(words.size());
         sentiment.setCountPositives(getPositiveCount(words));

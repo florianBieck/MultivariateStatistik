@@ -1,7 +1,5 @@
 package com.fbieck.entities.twitter;
 
-import com.fbieck.entities.Sentiment;
-import com.fbieck.entities.StockChange;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
@@ -9,7 +7,6 @@ import org.joda.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Data
 @Entity
@@ -31,10 +28,4 @@ public class Tweet {
     private Integer retweetCount;
 
     private Long userid;
-
-    @OneToOne(mappedBy = "tweet")
-    private Sentiment sentiment;
-
-    @OneToOne(mappedBy = "tweet")
-    private StockChange stockChange;
 }

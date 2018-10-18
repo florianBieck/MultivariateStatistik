@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ResultRepository extends CrudRepository<Result, Integer> {
 
-    Result findByTweet(Tweet tweet);
+    Result findByTweetAndHourInterval(Tweet tweet, Integer hourinterval);
 }

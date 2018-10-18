@@ -16,7 +16,7 @@ public class StockChange {
     @Column(name = "idstockchange")
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idtweet")
     private Tweet tweet;
 
