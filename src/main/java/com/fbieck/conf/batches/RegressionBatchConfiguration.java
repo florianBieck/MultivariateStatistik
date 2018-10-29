@@ -1,8 +1,8 @@
 package com.fbieck.conf.batches;
 
-import com.fbieck.batch.regression.RegressionWriter;
 import com.fbieck.batch.regression.h0.RegressionH0Processor;
 import com.fbieck.batch.regression.h0.RegressionH0Reader;
+import com.fbieck.batch.regression.h0.RegressionH0Writer;
 import com.fbieck.batch.regression.h1.RegressionH1Processor;
 import com.fbieck.batch.regression.h1.RegressionH1Reader;
 import com.fbieck.batch.regression.h2.RegressionH2Processor;
@@ -31,19 +31,23 @@ public class RegressionBatchConfiguration {
     private RegressionH0Processor regressionH0Processor;
     @Autowired
     private RegressionH0Reader regressionH0Reader;
+    @Autowired
+    private RegressionH0Writer regressionH0Writer;
 
     @Autowired
     private RegressionH1Processor regressionH1Processor;
     @Autowired
     private RegressionH1Reader regressionH1Reader;
+    @Autowired
+    private RegressionH0Writer regressionH1Writer;
 
     @Autowired
     private RegressionH2Processor regressionH2Processor;
     @Autowired
     private RegressionH2Reader regressionH2Reader;
-
     @Autowired
-    private RegressionWriter regressionWriter;
+    private RegressionH0Writer regressionH2Writer;
+
 
     @Bean
     public Job job_regressionH0() {
@@ -51,7 +55,7 @@ public class RegressionBatchConfiguration {
                 .<OLSMultipleLinearRegression, Regression>chunk(1)
                 .reader(regressionH0Reader)
                 .processor(regressionH0Processor)
-                .writer(regressionWriter)
+                .writer(regressionH0Writer)
                 .allowStartIfComplete(true)
                 .build();
         return jobBuilderFactory.get("job_regressionH0")
@@ -66,7 +70,7 @@ public class RegressionBatchConfiguration {
                 .<OLSMultipleLinearRegression, Regression>chunk(1)
                 .reader(regressionH1Reader)
                 .processor(regressionH1Processor)
-                .writer(regressionWriter)
+                .writer(regressionH1Writer)
                 .allowStartIfComplete(true)
                 .build();
         return jobBuilderFactory.get("job_regressionH1")
@@ -81,7 +85,7 @@ public class RegressionBatchConfiguration {
                 .<OLSMultipleLinearRegression, Regression>chunk(1)
                 .reader(regressionH2Reader)
                 .processor(regressionH2Processor)
-                .writer(regressionWriter)
+                .writer(regressionH2Writer)
                 .allowStartIfComplete(true)
                 .build();
         return jobBuilderFactory.get("job_regressionH2")

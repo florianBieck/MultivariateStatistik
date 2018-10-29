@@ -1,15 +1,17 @@
-package com.fbieck.batch.regression;
+package com.fbieck.batch.regression.h0;
 
 import com.fbieck.entities.Regression;
 import com.fbieck.repository.RegressionRepository;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
-public class RegressionWriter implements ItemWriter<Regression> {
+@Transactional
+public class RegressionH0Writer implements ItemWriter<Regression> {
 
     @Autowired
     private RegressionRepository regressionRepository;

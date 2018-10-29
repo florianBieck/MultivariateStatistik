@@ -6,10 +6,12 @@ import com.google.common.collect.Lists;
 import org.springframework.batch.item.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
+@Transactional
 public class ResultReader implements ItemReader<Tweet>, ItemStream {
 
     @Autowired

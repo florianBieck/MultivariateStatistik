@@ -4,14 +4,16 @@ import com.fbieck.entities.Regression;
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
 @Component
+@Transactional
 public class RegressionH2Processor implements ItemProcessor<OLSMultipleLinearRegression, Regression> {
 
-    private final String id = "RegressionH2";
+    private final Integer id = 2;
 
     @Override
     public Regression process(OLSMultipleLinearRegression ols) throws Exception {

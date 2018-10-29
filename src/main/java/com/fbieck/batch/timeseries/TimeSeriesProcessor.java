@@ -7,12 +7,14 @@ import com.google.common.collect.Lists;
 import org.joda.time.LocalDateTime;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component
+@Transactional
 public class TimeSeriesProcessor implements ItemProcessor<JsonNode, TimeSeries> {
     @Override
     public TimeSeries process(JsonNode jsonNode) throws Exception {

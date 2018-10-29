@@ -4,9 +4,11 @@ import com.fbieck.entities.twitter.Tweet;
 import org.joda.time.LocalDateTime;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Component
+@Transactional
 public class TweetProcessor implements ItemProcessor<org.springframework.social.twitter.api.Tweet, Tweet> {
 
     @Override

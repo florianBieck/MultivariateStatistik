@@ -11,7 +11,7 @@ public class Regression {
 
     @Id
     @Column(name = "idregression")
-    private String id;
+    private Integer id;
 
     @ElementCollection
     @OrderColumn

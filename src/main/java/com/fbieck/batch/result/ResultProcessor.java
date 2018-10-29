@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @StepScope
 @Slf4j
+@Transactional
 public class ResultProcessor implements ItemProcessor<Tweet, Result> {
 
     @Autowired
@@ -33,7 +35,12 @@ public class ResultProcessor implements ItemProcessor<Tweet, Result> {
     @Override
     public Result process(Tweet tweet) throws Exception {
 
-        Result result = resultRepository.findByTweetAndHourInterval(tweet, hourinterval);
+        Result result = null;
+        try {
+            result = resultRepository.findByTweetAndHourInterval(tweet, hourinterval);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            log.error("Not a unique Result: " + tweet.getId() + " " + hourinterval);
+        }
 
         if (result == null) {
             result = new Result();

@@ -20,7 +20,7 @@ public class TimeSeriesEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtimeseriesentry")
-    private Integer id;
+    private Long id;
 
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime timestamp;

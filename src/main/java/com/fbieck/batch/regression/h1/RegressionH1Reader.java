@@ -8,11 +8,14 @@ import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.springframework.batch.item.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
+@Transactional
 public class RegressionH1Reader implements ItemReader<OLSMultipleLinearRegression>, ItemStream {
 
     @Autowired
@@ -20,7 +23,9 @@ public class RegressionH1Reader implements ItemReader<OLSMultipleLinearRegressio
 
     @Override
     public OLSMultipleLinearRegression read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        List<Result> results = Lists.newArrayList(resultRepository.findAllByChangeIntervalIsNotNullAndRetweetCountIsNotNull());
+        List<Result> results = Lists.newArrayList(resultRepository.findAllByChangeIntervalIsNotNullAndRetweetCountIsNotNull())
+                .stream().filter(result -> result.getChangeInterval() != 0.0)
+                .collect(Collectors.toList());
 
         OLSMultipleLinearRegression olsMultipleLinearRegression = new OLSMultipleLinearRegression();
 
