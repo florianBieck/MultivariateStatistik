@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class SymbolRelation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idsymbolrelation")
     private Integer id;
 

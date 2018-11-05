@@ -9,7 +9,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -43,7 +43,8 @@ public class BatchConfiguration {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
 
         jobLauncher.setJobRepository(jobRepository);
-        jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        //jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        jobLauncher.setTaskExecutor(new SyncTaskExecutor());
         jobLauncher.afterPropertiesSet();
 
         return jobLauncher;
@@ -79,18 +80,18 @@ public class BatchConfiguration {
     }
 
     @Scheduled(fixedRate = 5000)
-    private void launch_stockchange_24h() throws Exception {
+    private void launch_stockchange_12h() throws Exception {
         jobLauncher().run(job_stockchange, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
-                .addLong("hourinterval", 24L)
+                .addLong("hourinterval", 12L)
                 .toJobParameters());
     }
 
     @Scheduled(fixedRate = 10000)
-    private void launch_stockchange_48h() throws Exception {
+    private void launch_stockchange_24h() throws Exception {
         jobLauncher().run(job_stockchange, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
-                .addLong("hourinterval", 48L)
+                .addLong("hourinterval", 24L)
                 .toJobParameters());
     }
 
@@ -103,6 +104,13 @@ public class BatchConfiguration {
     }
 
     @Scheduled(fixedRate = 5000)
+    private void launch_result_12h() throws Exception {
+        jobLauncher().run(job_result, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 12L)
+                .toJobParameters());
+    }
+    @Scheduled(fixedRate = 5000)
     private void launch_result_24h() throws Exception {
         jobLauncher().run(job_result, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
@@ -111,31 +119,70 @@ public class BatchConfiguration {
     }
 
     @Scheduled(fixedRate = 5000)
-    private void launch_result_48h() throws Exception {
-        jobLauncher().run(job_result, new JobParametersBuilder()
-                .addLong("date", System.currentTimeMillis())
-                .addLong("hourinterval", 48L)
-                .toJobParameters());
-    }
-
-    @Scheduled(fixedRate = 5000)
-    private void launch_regressionH0() throws Exception {
+    private void launch_regressionH0_1h() throws Exception {
         jobLauncher().run(job_regressionH0, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 1L)
+                .toJobParameters());
+    }
+    @Scheduled(fixedRate = 5000)
+    private void launch_regressionH0_12h() throws Exception {
+        jobLauncher().run(job_regressionH0, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 12L)
+                .toJobParameters());
+    }
+    @Scheduled(fixedRate = 5000)
+    private void launch_regressionH0_24h() throws Exception {
+        jobLauncher().run(job_regressionH0, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 24L)
                 .toJobParameters());
     }
 
     @Scheduled(fixedRate = 5000)
-    private void launch_regressionH1() throws Exception {
+    private void launch_regressionH1_1h() throws Exception {
         jobLauncher().run(job_regressionH1, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 1L)
+                .toJobParameters());
+    }
+    @Scheduled(fixedRate = 5000)
+    private void launch_regressionH1_12h() throws Exception {
+        jobLauncher().run(job_regressionH1, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 12L)
                 .toJobParameters());
     }
 
     @Scheduled(fixedRate = 5000)
-    private void launch_regressionH2() throws Exception {
+    private void launch_regressionH1_24h() throws Exception {
+        jobLauncher().run(job_regressionH1, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 24L)
+                .toJobParameters());
+    }
+
+    @Scheduled(fixedRate = 5000)
+    private void launch_regressionH2_1h() throws Exception {
         jobLauncher().run(job_regressionH2, new JobParametersBuilder()
                 .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 1L)
+                .toJobParameters());
+    }
+    @Scheduled(fixedRate = 5000)
+    private void launch_regressionH2_12h() throws Exception {
+        jobLauncher().run(job_regressionH2, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 12L)
+                .toJobParameters());
+    }
+
+    @Scheduled(fixedRate = 5000)
+    private void launch_regressionH2_24h() throws Exception {
+        jobLauncher().run(job_regressionH2, new JobParametersBuilder()
+                .addLong("date", System.currentTimeMillis())
+                .addLong("hourinterval", 24L)
                 .toJobParameters());
     }
 }

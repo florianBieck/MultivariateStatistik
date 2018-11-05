@@ -32,7 +32,7 @@ public class TweetBatchConfiguration {
     @Bean
     public Job job_tweet() {
         Step step = stepBuilderFactory.get("tweet")
-                .<org.springframework.social.twitter.api.Tweet, Tweet>chunk(10)
+                .<org.springframework.social.twitter.api.Tweet, Tweet>chunk(500)
                 .reader(tweetReader)
                 .processor(tweetProcessor)
                 .writer(tweetWriter)

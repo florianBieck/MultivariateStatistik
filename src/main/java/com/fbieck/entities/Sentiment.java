@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Sentiment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idsentiment")
     private Integer id;
 

@@ -10,11 +10,9 @@ public interface ResultRepository extends CrudRepository<Result, Integer> {
 
     Result findByTweetAndHourInterval(Tweet tweet, Integer hourinterval);
 
-    Iterable<Result> findAllByChangeIntervalIsNotNull();
+    Iterable<Result> findAllByChangeIntervalIsNotNullAndPositivityIsNotNullAndHourInterval(Integer hourinterval);
 
-    Iterable<Result> findAllByChangeIntervalIsNotNullAndPositivityIsNotNull();
+    Iterable<Result> findAllByChangeIntervalIsNotNullAndRetweetCountIsNotNullAndHourInterval(Integer hourinterval);
 
-    Iterable<Result> findAllByChangeIntervalIsNotNullAndRetweetCountIsNotNull();
-
-    Iterable<Result> findAllByChangeIntervalIsNotNullAndPositivityIsNotNullAndRetweetCountIsNotNull();
+    Iterable<Result> findAllByChangeIntervalIsNotNullAndPositivityIsNotNullAndRetweetCountIsNotNullAndHourInterval(Integer hourinterval);
 }

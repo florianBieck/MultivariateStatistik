@@ -2,35 +2,50 @@ package com.fbieck.batch.regression.h0;
 
 import com.fbieck.entities.Result;
 import com.fbieck.repository.ResultRepository;
-import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.exception.NoDataException;
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.item.*;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Transactional
-public class RegressionH0Reader implements ItemReader<OLSMultipleLinearRegression>, ItemStream {
+@StepScope
+@Slf4j
+public class RegressionH0Reader implements ItemReader<OLSMultipleLinearRegression> {
 
     private static Logger logger = LoggerFactory.getLogger(RegressionH0Reader.class);
 
     @Autowired
     private ResultRepository resultRepository;
 
+    @Value("#{jobParameters[hourinterval]}")
+    public Integer hourinterval;
+
+    private boolean runned = false;
+
     @Override
     public OLSMultipleLinearRegression read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        List<Result> results = Lists.newArrayList(resultRepository.findAllByChangeIntervalIsNotNullAndPositivityIsNotNull())
-                .stream().filter(result -> result.getChangeInterval() != 0.0)
-                .collect(Collectors.toList());
+        if (runned) {
+            runned = false;
+            return null;
+        }
+        List<Result> results = (List<Result>) resultRepository
+                .findAllByChangeIntervalIsNotNullAndPositivityIsNotNullAndHourInterval(hourinterval);
 
+        log.info(results.size() + " Resulst geladen.");
         OLSMultipleLinearRegression olsMultipleLinearRegression = new OLSMultipleLinearRegression();
 
         List<Double> changeintervals = new ArrayList<>();
@@ -50,21 +65,8 @@ public class RegressionH0Reader implements ItemReader<OLSMultipleLinearRegressio
             //IGNORE
             return null;
         }
+        log.info("Finish read");
+        runned = true;
         return olsMultipleLinearRegression;
-    }
-
-    @Override
-    public void open(ExecutionContext executionContext) throws ItemStreamException {
-
-    }
-
-    @Override
-    public void update(ExecutionContext executionContext) throws ItemStreamException {
-
-    }
-
-    @Override
-    public void close() throws ItemStreamException {
-
     }
 }

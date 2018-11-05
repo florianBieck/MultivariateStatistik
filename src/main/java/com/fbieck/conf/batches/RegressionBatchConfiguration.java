@@ -56,7 +56,6 @@ public class RegressionBatchConfiguration {
                 .reader(regressionH0Reader)
                 .processor(regressionH0Processor)
                 .writer(regressionH0Writer)
-                .allowStartIfComplete(true)
                 .build();
         return jobBuilderFactory.get("job_regressionH0")
                 .incrementer(new RunIdIncrementer())
@@ -71,7 +70,6 @@ public class RegressionBatchConfiguration {
                 .reader(regressionH1Reader)
                 .processor(regressionH1Processor)
                 .writer(regressionH1Writer)
-                .allowStartIfComplete(true)
                 .build();
         return jobBuilderFactory.get("job_regressionH1")
                 .incrementer(new RunIdIncrementer())
@@ -86,7 +84,6 @@ public class RegressionBatchConfiguration {
                 .reader(regressionH2Reader)
                 .processor(regressionH2Processor)
                 .writer(regressionH2Writer)
-                .allowStartIfComplete(true)
                 .build();
         return jobBuilderFactory.get("job_regressionH2")
                 .incrementer(new RunIdIncrementer())

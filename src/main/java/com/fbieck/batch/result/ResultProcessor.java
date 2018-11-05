@@ -64,13 +64,18 @@ public class ResultProcessor implements ItemProcessor<Tweet, Result> {
             return null;
         }
 
-        Sentiment sentiment = sentimentRepository.findByTweet(tweet);
-        if (sentiment != null) {
-            result.setPositivity(sentiment.getPositivity());
-        } else {
-            return null;
-        }
+        Sentiment sentiment;
+        try {
+            sentiment = sentimentRepository.findByTweet(tweet);
+            if (sentiment != null) {
+                result.setPositivity(sentiment.getPositivity());
+            } else {
+                return null;
+            }
+            return result;
+        } catch (Exception e) {
 
-        return result;
+        }
+        return null;
     }
 }

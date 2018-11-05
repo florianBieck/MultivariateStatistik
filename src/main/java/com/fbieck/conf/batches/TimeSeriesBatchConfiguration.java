@@ -33,7 +33,7 @@ public class TimeSeriesBatchConfiguration {
     @Bean
     public Job job_timeseries() {
         Step step = stepBuilderFactory.get("timeseries")
-                .<JsonNode, TimeSeries>chunk(10)
+                .<JsonNode, TimeSeries>chunk(500)
                 .reader(timeSeriesReader)
                 .processor(timeSeriesProcessor)
                 .writer(timeSeriesWriter)

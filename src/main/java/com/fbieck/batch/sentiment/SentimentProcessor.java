@@ -50,16 +50,22 @@ public class SentimentProcessor implements ItemProcessor<Tweet, Sentiment> {
     public Sentiment process(Tweet tweet) throws Exception {
         List<String> words = preprocessIntoWordList(tweet.getText());
 
-        Sentiment sentiment = sentimentRepository.findByTweet(tweet);
-        if (sentiment == null) {
-            sentiment = new Sentiment();
-            sentiment.setTweet(tweet);
+        Sentiment sentiment;
+        try {
+            sentiment = sentimentRepository.findByTweet(tweet);
+            if (sentiment == null) {
+                sentiment = new Sentiment();
+                sentiment.setTweet(tweet);
+            }
+            sentiment.setCountWords(words.size());
+            sentiment.setCountPositives(getPositiveCount(words));
+            sentiment.setCountNegatives(getNegativeCount(words));
+            sentiment.setPositivity(calculatePositivity(sentiment));
+            return sentiment;
+        } catch (Exception e) {
+
         }
-        sentiment.setCountWords(words.size());
-        sentiment.setCountPositives(getPositiveCount(words));
-        sentiment.setCountNegatives(getNegativeCount(words));
-        sentiment.setPositivity(calculatePositivity(sentiment));
-        return sentiment;
+        return null;
     }
 
     private List<String> preprocessIntoWordList(String text) {

@@ -10,8 +10,13 @@ import java.util.List;
 public class Regression {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idregression")
     private Integer id;
+
+    private String hypothesis;
+
+    private Integer hourinterval;
 
     @ElementCollection
     @OrderColumn

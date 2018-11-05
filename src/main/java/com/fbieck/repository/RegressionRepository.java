@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RegressionRepository extends CrudRepository<Regression, String> {
+
+    Regression findByHypothesisAndHourinterval(String hypothesis, Integer hourinterval);
 }

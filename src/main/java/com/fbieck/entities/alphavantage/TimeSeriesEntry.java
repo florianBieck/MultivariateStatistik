@@ -18,7 +18,7 @@ public class TimeSeriesEntry {
     public static String FIELD_VOLUME = "5. volume";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idtimeseriesentry")
     private Long id;
 
