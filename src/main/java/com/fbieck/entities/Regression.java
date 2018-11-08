@@ -30,6 +30,11 @@ public class Regression {
     @OrderColumn
     private List<Double> estimatedParametersStandardErrors;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "regression_regressioncoefficients", joinColumns = @JoinColumn(name = "idregression"),
+            inverseJoinColumns = @JoinColumn(name = "idregressioncoefficient"))
+    private List<RegressionCoefficient> regressionCoefficients;
+
     private Double estimatedErrorVariance;
 
     private Double estimatedRegressionStandardError;
